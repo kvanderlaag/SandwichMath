@@ -149,12 +149,12 @@ namespace Math
 		Matrix3x3<T>& InverseSelf()
 		{
 			const Vector3<T> cofactorVector(Cofactor(1, 1, 2, 2), Cofactor(1, 2, 2, 0), Cofactor(1, 0, 2, 1));
-			const T determinant = (*this)[0].dot(cofactorVector);
+			const T determinant = (*this)[0].Dot(cofactorVector);
 			assert(determinant != static_cast<T>(0));
 			const T s = static_cast<T>(1) / determinant;
-			*this = Matrix3x3<T>(cofactorVector.x * s, Cofactor(0, 2, 2, 1) * s, Cofactor(0, 1, 1, 2) * s,
-				cofactorVector.y * s, Cofactor(0, 0, 2, 2) * s, Cofactor(0, 2, 1, 0) * s,
-				cofactorVector.z * s, Cofactor(0, 1, 2, 0) * s, Cofactor(0, 0, 1, 1) * s);
+			*this = Matrix3x3<T>({ cofactorVector.x * s, Cofactor(0, 2, 2, 1) * s, Cofactor(0, 1, 1, 2) * s },
+				{ cofactorVector.y * s, Cofactor(0, 0, 2, 2) * s, Cofactor(0, 2, 1, 0) * s },
+				{ cofactorVector.z * s, Cofactor(0, 1, 2, 0) * s, Cofactor(0, 0, 1, 1) * s });
 			
 			return *this;
 		}
@@ -162,12 +162,12 @@ namespace Math
 		Matrix3x3<T> InverseClone() const
 		{
 			const Vector3<T> cofactorVector(Cofactor(1, 1, 2, 2), Cofactor(1, 2, 2, 0), Cofactor(1, 0, 2, 1));
-			const T determinant = (*this)[0].dot(cofactorVector);
+			const T determinant = (*this)[0].Dot(cofactorVector);
 			assert(determinant != static_cast<T>(0));
 			const T s = static_cast<T>(1) / determinant;
-			return { cofactorVector.x * s, Cofactor(0, 2, 2, 1) * s, Cofactor(0, 1, 1, 2) * s,
-				cofactorVector.y * s, Cofactor(0, 0, 2, 2) * s, Cofactor(0, 2, 1, 0) * s,
-				cofactorVector.z * s, Cofactor(0, 1, 2, 0) * s, Cofactor(0, 0, 1, 1) * s
+			return { { cofactorVector.x * s, Cofactor(0, 2, 2, 1) * s, Cofactor(0, 1, 1, 2) * s },
+				{ cofactorVector.y * s, Cofactor(0, 0, 2, 2) * s, Cofactor(0, 2, 1, 0) * s },
+				{ cofactorVector.z * s, Cofactor(0, 1, 2, 0) * s, Cofactor(0, 0, 1, 1) * s }
 			};
 		}
 

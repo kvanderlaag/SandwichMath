@@ -4427,16 +4427,11 @@ namespace Math
 			return { a, a };
 		}
 
-
-		
 		union
 		{
 			struct
 			{
 				T x, y, z, w;
-			};
-			struct
-			{
 				T r, g, b, a;
 			};
 			T e[4];
@@ -4530,22 +4525,22 @@ namespace Math
 	}
 
 	template <typename T>
-	static Vector2<T>& Rotate(Vector2<T>& vec, const T radians)
-	{
-		const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
-		const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
-		vec.x = x2;
-		vec.y = y2;
-		return vec;
-	}
+	static Vector2<T>& Rotate(Vector2<T>& vec, const T radians);
+	//{
+	//	const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
+	//	const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
+	//	vec.x = x2;
+	//	vec.y = y2;
+	//	return vec;
+	//}
 
 	template <typename T>
-	static Vector2<T> RotateCopy(const Vector2<T>& vec, const T radians)
-	{
-		const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
-		const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
-		return { x2, y2 };
-	}
+	static Vector2<T> RotateCopy(const Vector2<T>& vec, const T radians);
+	//{
+	//	const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
+	//	const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
+	//	return { x2, y2 };
+	//}
 
 	// Vector3
 	template <typename T>

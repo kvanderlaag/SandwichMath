@@ -5,8 +5,32 @@
 #include <cinttypes>
 #include <cassert>
 
+#include <MathUtil.h>
+#include <MathTemplateUtil.h>
+
 namespace Math
 {
+    template<typename T>
+    class Vector2;
+    template<typename T>
+    class Vector3;
+    template<typename T>
+    class Vector4;
+
+    template<typename T>
+    T Dot(Vector2<T> lhs, Vector2<T> rhs);
+    template<typename T>
+    T Dot(Vector3<T> lhs, Vector3<T> rhs);
+    template<typename T>
+    T Dot(Vector4<T> lhs, Vector4<T> rhs);
+
+    template<typename T>
+    T Cross(Vector2<T> lhs, Vector2<T> rhs);
+    template<typename T>
+    T Cross(Vector3<T> lhs, Vector3<T> rhs);
+    template<typename T>
+    T Cross(Vector4<T> lhs, Vector4<T> rhs);
+
 	template <typename T>
 	class Vector2
 	{
@@ -174,7 +198,7 @@ namespace Math
 
 		T Length() const
 		{
-			return std::sqrtf((e[0] * e[0]) + (e[1] * e[1]));
+			return Sqrt<T>((e[0] * e[0]) + (e[1] * e[1]));
 		}
 
 		T LengthSq() const
@@ -449,7 +473,7 @@ namespace Math
 
 		T Length() const
 		{
-			return std::sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
+			return Sqrt<T>((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]));
 		}
 
 		T LengthSq() const
@@ -1047,7 +1071,7 @@ namespace Math
 
 		T Length() const
 		{
-			return std::sqrtf((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]) + (e[3] * e[3]));
+			return Sqrt<T>((e[0] * e[0]) + (e[1] * e[1]) + (e[2] * e[2]) + (e[3] * e[3]));
 		}
 
 		T LengthSq() const
@@ -4525,22 +4549,22 @@ namespace Math
 	}
 
 	template <typename T>
-	static Vector2<T>& Rotate(Vector2<T>& vec, const T radians);
-	//{
-	//	const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
-	//	const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
-	//	vec.x = x2;
-	//	vec.y = y2;
-	//	return vec;
-	//}
+	static Vector2<T>& Rotate(Vector2<T>& vec, const T radians)
+	{
+		const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
+		const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
+		vec.x = x2;
+		vec.y = y2;
+		return vec;
+	}
 
 	template <typename T>
-	static Vector2<T> RotateCopy(const Vector2<T>& vec, const T radians);
-	//{
-	//	const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
-	//	const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
-	//	return { x2, y2 };
-	//}
+	static Vector2<T> RotateCopy(const Vector2<T>& vec, const T radians)
+	{
+		const T x2 = Cos<T>(radians) * vec.x - Sin<T>(radians) * vec.y;
+		const T y2 = Sin<T>(radians) * vec.x + Cos<T>(radians) * vec.y;
+		return { x2, y2 };
+	}
 
 	// Vector3
 	template <typename T>
@@ -4697,16 +4721,69 @@ namespace Math
 		return vec.Normalize();
 	}
 
+    template <typename T>
+    inline Vector2<T> Normalize(const Vector2<T>& vec)
+    {
+        Vector2<T> temp = vec;
+        return temp.Normalize();
+    }
+
 	template <typename T>
 	inline Vector3<T>& Normalize(Vector3<T>& vec)
 	{
 		return vec.Normalize();
 	}
 
+    template <typename T>
+    inline Vector3<T> Normalize(const Vector3<T>& vec)
+    {
+        Vector3<T> temp = vec;
+        return temp.Normalize();
+    }
+
 	template <typename T>
 	inline Vector4<T>& Normalize(Vector4<T>& vec)
 	{
 		return vec.Normalize();
+	}
+
+    template <typename T>
+    inline Vector4<T> Normalize(const Vector4<T>& vec)
+    {
+        Vector4<T> temp = vec;
+        return temp.Normalize();
+    }
+
+	// Get orthogonal vector specializations	
+	template <typename T>
+	void GetOrthogonal(const Math::Vector3<T>& n, Math::Vector3<T>& p, Math::Vector3<T>& q)
+	{
+		if (Abs<T>(n.z) > static_cast<T>(k_invSqrt2f))
+		{
+			// p -> y/z plane
+			const T a = n.y * n.y + n.z * n.z;
+			const T k = static_cast<T>(1.f) / Sqrt<T>(a);
+			p.x = static_cast<T>(0.f);
+			p.y = -n.z * k;
+			p.z = n.y * k;
+			// q -> n x p
+			q.x = a * k;
+			q.y = -n.x * p.z;
+			q.z = n.x * p.y;
+		}
+		else
+		{
+			// p -> x/y plane
+			const T a = n.x * n.x + n.y * n.y;
+			const T k = static_cast<T>(1.f) / Sqrt<T>(a);
+			p.x = -n.y * k;
+			p.y = n.x * k;
+			p.z = static_cast<T>(0.f);
+			// q -> n x p
+			q.x = -n.z * p.y;
+			q.y = n.z * p.x;
+			q.z = a * k;
+		}
 	}
 
 // Convenience Aliases

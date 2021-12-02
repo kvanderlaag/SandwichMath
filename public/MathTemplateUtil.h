@@ -1,8 +1,7 @@
 #pragma once
 
 #include <cmath>
-
-#include <Vector.h>
+#include <MathUtil.h>
 
 namespace Math
 {
@@ -147,36 +146,4 @@ namespace Math
 	{
 		return std::atan2(arg1, arg2);
 	}
-
-// Get orthogonal vector specializations	
-	template <typename T>
-	void GetOrthogonal(const Math::Vector3<T>& n, Math::Vector3<T>& p, Math::Vector3<T>& q)
-	{
-		if (Abs<T>(n.z) > static_cast<T>(k_invSqrt2f))
-		{
-			// p -> y/z plane
-			const T a = n.y * n.y + n.z * n.z;
-			const T k = static_cast<T>(1.f) / Sqrt<T>(a);
-			p.x = static_cast<T>(0.f);
-			p.y = -n.z * k;
-			p.z = n.y * k;
-			// q -> n x p
-			q.x = a * k;
-			q.y = -n.x* p.z;
-			q.z = n.x * p.y;
-		}
-		else 
-		{
-			// p -> x/y plane
-			const T a = n.x * n.x + n.y * n.y;
-		    const T k = static_cast<T>(1.f) / Sqrt<T>(a);
-		    p.x = -n.y * k;
-		    p.y = n.x * k;
-		    p.z = static_cast<T>(0.f);
-		    // q -> n x p
-			q.x = -n.z * p.y;
-		    q.y = n.z * p.x;
-		    q.z = a * k;
-		}
-	}	
 }

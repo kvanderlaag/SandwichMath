@@ -3,6 +3,7 @@
 #include <cassert>
 #include <limits>
 
+#include <MathUtil.h>
 #include <MathTemplateUtil.h>
 #include <Vector.h>
 
@@ -337,7 +338,7 @@ namespace Math
 				if (absProduct < 1.0f - std::numeric_limits<T>::epsilon())
 				{
 					// Long angle case (see http://en.wikipedia.org/wiki/Slerp)
-					const T theta = Coa<T>(absProduct);
+					const T theta = Cos<T>(absProduct);
 					const T d = Sin<T>(theta);
 					assert(d > static_cast<T>(0.f));
 

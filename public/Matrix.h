@@ -374,7 +374,5 @@ namespace Math
 	using Matrix3x3i = Matrix3x3<int>;
 	using Matrix4x4i = Matrix4x4<int>;
 
-	static const Matrix3x3f test = Matrix3x3f::IDENTITY * Matrix3x3f::IDENTITY;;
-
 	bool TestMatrixMultiplication();
 }

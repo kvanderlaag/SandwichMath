@@ -3,7 +3,7 @@
 
 namespace Math
 {
-	    template<>
+	template<>
     const Vector2f Vector2f::UNIT_X = Vector2f(1.f, 0.f);
     template<>
     const Vector2f Vector2f::UNIT_Y = Vector2f(0.f, 1.f);
@@ -100,5 +100,10 @@ namespace Math
             Vector2f lerpTest = Lerp(Vector2f::UNIT_X, Vector2f::UNIT_Y, 0.5f);
 		}
 		
+        Vector3f t1;
+        Vector3f t2;
+
+        float t3 = Math::Dot(t1, t2);
+
 	}
 }
